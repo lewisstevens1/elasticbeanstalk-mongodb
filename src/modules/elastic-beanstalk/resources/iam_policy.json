@@ -1,0 +1,186 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCloudformationReadOperationsOnElasticBeanstalkStacks",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:*"
+      ],
+      "Resource": [
+        "arn:aws:cloudformation:*:*:stack/awseb-*",
+        "arn:aws:cloudformation:*:*:stack/eb-*"
+      ]
+    },
+    {
+      "Sid": "AllowOperations",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:*",
+        "ec2:*",
+        "elasticloadbalancing:*",
+        "autoscaling:*",
+        "lambda:GetFunction",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sns:Publish",
+        "rds:*",
+        "elasticbeanstalk:*"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "AllowOperationsOnHealthStreamingLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:*"
+      ],
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/elasticbeanstalk/*"
+    },
+    {
+      "Sid": "AllowPassRoleToElasticBeanstalkAndDownstreamServices",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::*:role/*",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": [
+            "elasticbeanstalk.amazonaws.com",
+            "ec2.amazonaws.com",
+            "ec2.amazonaws.com.cn",
+            "autoscaling.amazonaws.com",
+            "elasticloadbalancing.amazonaws.com",
+            "ecs.amazonaws.com",
+            "cloudformation.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "ReadOnlyPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeLogGroups",
+        "rds:DescribeDBEngineVersions",
+        "rds:DescribeDBInstances",
+        "rds:DescribeOrderableDBInstanceOptions",
+        "sns:ListSubscriptionsByTopic"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "EC2BroadOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSBroadOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:CreateCluster",
+        "ecs:DescribeClusters",
+        "ecs:RegisterTaskDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSDeleteClusterOperationPermissions",
+      "Effect": "Allow",
+      "Action": "ecs:DeleteCluster",
+      "Resource": "arn:aws:ecs:*:*:cluster/awseb-*"
+    },
+    {
+      "Sid": "CWLogsOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:DeleteLogGroup",
+        "logs:PutRetentionPolicy"
+      ],
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/elasticbeanstalk/*"
+    },
+    {
+      "Sid": "S3ObjectOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteObject",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:GetObjectVersion",
+        "s3:GetObjectVersionAcl",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutObjectVersionAcl"
+      ],
+      "Resource": "arn:aws:s3:::elasticbeanstalk-*/*"
+    },
+    {
+      "Sid": "S3BucketOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "arn:aws:s3:::elasticbeanstalk-*"
+    },
+    {
+      "Sid": "SNSOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "sns:CreateTopic",
+        "sns:GetTopicAttributes",
+        "sns:SetTopicAttributes",
+        "sns:Subscribe"
+      ],
+      "Resource": "arn:aws:sns:*:*:ElasticBeanstalkNotifications-*"
+    },
+    {
+      "Sid": "SQSOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl"
+      ],
+      "Resource": [
+        "arn:aws:sqs:*:*:awseb-e-*",
+        "arn:aws:sqs:*:*:eb-*"
+      ]
+    },
+    {
+      "Sid": "CWPutMetricAlarmOperationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricAlarm"
+      ],
+      "Resource": [
+        "arn:aws:cloudwatch:*:*:alarm:awseb-*",
+        "arn:aws:cloudwatch:*:*:alarm:eb-*"
+      ]
+    },
+    {
+      "Sid": "AllowECSTagResource",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:TagResource"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "ecs:CreateAction": [
+            "CreateCluster",
+            "RegisterTaskDefinition"
+          ]
+        }
+      }
+    }
+  ]
+}
